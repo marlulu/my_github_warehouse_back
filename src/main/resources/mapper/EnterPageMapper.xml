@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktp.dao.EnterPageDao">
+
+    <insert id="registStudent" parameterType="com.ktp.entity.StudentEntity">
+        insert into student(
+                            studentId,
+                            studentName,
+                            password,
+                            school,
+                            phone,
+                            studentNum
+                            )
+        values (
+                #{studentId},
+                #{studentName},
+                #{password},
+                #{school},
+                #{phone},
+                #{studentNum}
+                )
+    </insert>
+
+    <insert id="registTeacher" parameterType="com.ktp.entity.TeacherEntity">
+        insert into teacher(
+                            teacherId,
+                            teacherName,
+                            password,
+                            school,
+                            phone
+                            )
+        values (
+                #{teacherId},
+                #{teacherName},
+                #{password},
+                #{school},
+                #{phone}
+                )
+    </insert>
+
+    <select id="loginStudent" resultType="com.ktp.entity.StudentEntity">
+        select * from student where phone = #{username}
+    </select>
+
+    <select id="loginTeacher" resultType="com.ktp.entity.TeacherEntity">
+        select * from teacher where phone = #{username}
+    </select>
+
+</mapper>
