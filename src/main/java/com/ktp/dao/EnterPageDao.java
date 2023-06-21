@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface EnterPageDao {
-    StudentEntity loginStudent(@Param("username") String username);
+    StudentEntity getStudent(@Param("username") String username);
 
-    TeacherEntity loginTeacher(@Param("username") String username);
+    TeacherEntity getTeacher(@Param("username") String username);
 
     Integer registTeacher(TeacherEntity teacherEntity);
 

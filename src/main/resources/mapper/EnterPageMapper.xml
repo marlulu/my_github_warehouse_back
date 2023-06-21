@@ -38,11 +38,11 @@
                 )
     </insert>
 
-    <select id="loginStudent" resultType="com.ktp.entity.StudentEntity">
+    <select id="getStudent" resultType="com.ktp.entity.StudentEntity">
         select * from student where phone = #{username}
     </select>
 
-    <select id="loginTeacher" resultType="com.ktp.entity.TeacherEntity">
+    <select id="getTeacher" resultType="com.ktp.entity.TeacherEntity">
         select * from teacher where phone = #{username}
     </select>
 

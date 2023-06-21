@@ -20,6 +20,9 @@ public class EnterPageController {
     @ResponseBody
     public Result<UserResponse> login(@RequestBody UserRequest userRequest) {
         try{
+            if(userRequest.getUsername().equals("") && userRequest.getPassword().equals("")) {
+                return Result.error("请输入账号和密码");
+            }
             UserResponse userResponse = enterPageService.login(userRequest.getUsername(), userRequest.getPassword());
             if(userResponse.getPhone() == null) {
                 return Result.error("账号未注册");
@@ -41,7 +44,7 @@ public class EnterPageController {
             if(num > 0) {
                 return Result.success("注册成功", num);
             } else {
-                return Result.error("该账号已存在，无法注册");
+                return Result.error("该电话号已注册，无法注册");
             }
         } catch (Exception e) {
             return Result.error(e.getMessage());

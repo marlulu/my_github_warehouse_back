@@ -19,13 +19,14 @@ public class EnterPageServiceImpl implements EnterPageService {
     EnterPageDao enterPageDao;
     @Override
     public UserResponse login(String username, String password) {
-        StudentEntity studentEntity = enterPageDao.loginStudent(username);
-        TeacherEntity teacherEntity = enterPageDao.loginTeacher(username);
+        StudentEntity studentEntity = enterPageDao.getStudent(username);
+        TeacherEntity teacherEntity = enterPageDao.getTeacher(username);
         UserResponse userResponse = new UserResponse();
         if(studentEntity != null) {
             userResponse.setPhone(username);
             if(studentEntity.getPassword().equals(password)) {
                 BeanUtils.copyProperties(studentEntity, userResponse);
+                userResponse.setType("student");
             }
         }
 
@@ -33,6 +34,7 @@ public class EnterPageServiceImpl implements EnterPageService {
             userResponse.setPhone(username);
             if(teacherEntity.getPassword().equals(password)) {
                 BeanUtils.copyProperties(teacherEntity, userResponse);
+                userResponse.setType("teacher");
             }
         }
 
@@ -41,26 +43,26 @@ public class EnterPageServiceImpl implements EnterPageService {
 
     @Override
     public Integer regist(RegistRequest registRequest) {
+        StudentEntity studentEntityExist = enterPageDao.getStudent(registRequest.getUsername());
+        TeacherEntity teacherEntityExist = enterPageDao.getTeacher(registRequest.getUsername());
         if(!registRequest.getStudentNum().equals("")) {
-            StudentEntity studentEntityExist = enterPageDao.loginStudent(registRequest.getUsername());
-            if(studentEntityExist != null) {
+            if(studentEntityExist != null || teacherEntityExist != null) {
                 return -1;
             }
             StudentEntity studentEntity = new StudentEntity();
             BeanUtils.copyProperties(registRequest, studentEntity);
             studentEntity.setPhone(registRequest.getUsername());
             studentEntity.setStudentName(registRequest.getName());
-            studentEntity.setStudentId("ktp" + registRequest.getUsername());
+            studentEntity.setStudentId("ktpst" + registRequest.getUsername());
             studentEntity.setPhone(registRequest.getUsername());
             enterPageDao.registStudent(studentEntity);
         } else {
-            TeacherEntity teacherEntityExist = enterPageDao.loginTeacher(registRequest.getUsername());
-            if(teacherEntityExist != null) {
+            if(studentEntityExist != null || teacherEntityExist != null) {
                 return -1;
             }
             TeacherEntity teacherEntity = new TeacherEntity();
             BeanUtils.copyProperties(registRequest, teacherEntity);
-            teacherEntity.setTeacherId("ktp" + registRequest.getUsername());
+            teacherEntity.setTeacherId("ktpte" + registRequest.getUsername());
             teacherEntity.setPhone(registRequest.getUsername());
             teacherEntity.setTeacherName(registRequest.getName());
             enterPageDao.registTeacher(teacherEntity);

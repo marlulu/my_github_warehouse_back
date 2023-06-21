@@ -24,4 +24,6 @@ public class UserResponse {
 
     private String teacherName;
 
+    private String type;
+
 }
